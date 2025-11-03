@@ -37,7 +37,8 @@ namespace HashCompareBench.Tests
                 ExpectedDistance = expected,
                 StandardDeviation = stdDev,
                 ZStatistic = zStatistic,
-                IsPassing = isPassing
+                IsPassing = isPassing,
+                IndividualDistances = distances
             };
         }
     }

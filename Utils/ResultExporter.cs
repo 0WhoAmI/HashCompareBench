@@ -14,32 +14,37 @@ namespace HashCompareBench.Utils
             Directory.CreateDirectory(_outputDir);
         }
 
-        public void SaveHammingResults(List<HammingDistanceTestResult> results, string fileName)
+        // --- PLIK 1: Szczegółowe "kropki" dla Testu Hamminga ---
+        public void SaveHammingDetails(List<HammingDistanceTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
             var sb = new StringBuilder();
-            sb.AppendLine("Algorithm,MeanDistance,ExpectedDistance,StdDev,ZStatistic,IsPassing");
+            sb.AppendLine("Algorithm,SampleIndex,HammingDistance");
 
             foreach (var res in results)
             {
-                sb.AppendLine($"{res.AlgorithmName},{res.MeanDistance},{res.ExpectedDistance},{res.StandardDeviation},{res.ZStatistic},{res.IsPassing}");
+                for (int i = 0; i < res.IndividualDistances.Count; i++)
+                {
+                    sb.AppendLine($"{res.AlgorithmName},{i},{res.IndividualDistances[i]}");
+                }
             }
 
             File.WriteAllText(filePath, sb.ToString());
             Console.WriteLine($"Zapisano: {filePath}");
         }
 
-        public void SaveBitPredictionResults(List<BitPredictionTestResult> results, string fileName)
+        // --- PLIK 2: Szczegółowe "kropki" dla Testu Predykcji Bitów ---
+        public void SaveBitPredictionDetails(List<BitPredictionTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
             var sb = new StringBuilder();
-            sb.AppendLine("Algorithm,BitPosition,ProbabilityOfOne,ZStatistic");
+            sb.AppendLine("Algorithm,BitPosition,ZStatistic,ProbabilityOfOne");
 
             foreach (var res in results)
             {
                 for (int i = 0; i < res.BitProbabilities.Length; i++)
                 {
-                    sb.AppendLine($"{res.AlgorithmName},{i},{res.BitProbabilities[i]},{res.ZStatistics[i]}");
+                    sb.AppendLine($"{res.AlgorithmName},{i},{res.ZStatistics[i]},{res.BitProbabilities[i]}");
                 }
             }
 
@@ -47,33 +52,60 @@ namespace HashCompareBench.Utils
             Console.WriteLine($"Zapisano: {filePath}");
         }
 
-        public void SaveRunsTestSummary(List<RunsTestResult> results, string fileName)
+        // --- PLIK 3: Tabela porównawcza dla Testu Hamminga ---
+        public void SaveHammingSummaryTable(List<HammingDistanceTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
             var sb = new StringBuilder();
-            sb.AppendLine("Algorithm,PercentageOfHashesPassing");
+            sb.AppendLine("Function,Max,Min,Avg,SD");
 
             foreach (var res in results)
             {
-                sb.AppendLine($"{res.AlgorithmName},{res.PercentageOfHashesPassing}");
+                double max = res.IndividualDistances.Max();
+                double min = res.IndividualDistances.Min();
+                sb.AppendLine($"{res.AlgorithmName},{max},{min},{res.MeanDistance},{res.StandardDeviation}");
             }
 
             File.WriteAllText(filePath, sb.ToString());
             Console.WriteLine($"Zapisano: {filePath}");
         }
 
-        public void SaveRunsTestDetails(List<RunsTestResult> results, string fileName)
+        // --- PLIK 4: Tabela porównawcza dla Testu Predykcji Bitów ---
+        public void SaveBitPredictionSummaryTable(List<BitPredictionTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
             var sb = new StringBuilder();
-            sb.AppendLine("Algorithm,ZStatistic");
+            sb.AppendLine("Function,Max,Min,Avg,SD");
 
             foreach (var res in results)
             {
-                foreach (var z in res.IndividualZStatistics)
-                {
-                    sb.AppendLine($"{res.AlgorithmName},{z}");
-                }
+                double max = res.ZStatistics.Max();
+                double min = res.ZStatistics.Min();
+                double avg = res.ZStatistics.Average();
+                double sd = StatisticsHelper.CalculateStdDev(res.ZStatistics, avg);
+
+                sb.AppendLine($"{res.AlgorithmName},{max},{min},{avg},{sd}");
+            }
+
+            File.WriteAllText(filePath, sb.ToString());
+            Console.WriteLine($"Zapisano: {filePath}");
+        }
+
+        // --- PLIK 5: Tabela porównawcza dla Testu Serii ---
+        public void SaveRunsTestSummaryTable(List<RunsTestResult> results, string fileName)
+        {
+            string filePath = Path.Combine(_outputDir, fileName);
+            var sb = new StringBuilder();
+            sb.AppendLine("Function,Max,Min,Avg,SD");
+
+            foreach (var res in results)
+            {
+                double max = res.IndividualZStatistics.Max();
+                double min = res.IndividualZStatistics.Min();
+                double avg = res.IndividualZStatistics.Average();
+                double sd = StatisticsHelper.CalculateStdDev(res.IndividualZStatistics, avg);
+
+                sb.AppendLine($"{res.AlgorithmName},{max},{min},{avg},{sd}");
             }
 
             File.WriteAllText(filePath, sb.ToString());

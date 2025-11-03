@@ -46,10 +46,11 @@ namespace HashCompareBench
             Console.WriteLine("\n--- Zakończono testy. Zapisywanie wyników... ---");
 
             var exporter = new ResultExporter(OUTPUT_DIR);
-            exporter.SaveHammingResults(hdResults, "1_hamming_summary.csv");
-            exporter.SaveBitPredictionResults(bpResults, "2_bit_prediction_details.csv");
-            exporter.SaveRunsTestSummary(rtResults, "3_runs_summary.csv");
-            exporter.SaveRunsTestDetails(rtResults, "4_runs_details.csv");
+            exporter.SaveHammingDetails(hdResults, "1_hamming_details_per_sample.csv");
+            exporter.SaveBitPredictionDetails(bpResults, "2_bit_prediction_details_per_bit.csv");
+            exporter.SaveHammingSummaryTable(hdResults, "3_summary_table_hamming.csv");
+            exporter.SaveBitPredictionSummaryTable(bpResults, "4_summary_table_bit_prediction.csv");
+            exporter.SaveRunsTestSummaryTable(rtResults, "5_summary_table_runs_test.csv");
 
             Console.WriteLine($"Gotowe! Wyniki zapisano w folderze '{OUTPUT_DIR}'.");
         }

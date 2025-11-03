@@ -8,5 +8,6 @@
         public double StandardDeviation { get; set; }
         public double ZStatistic { get; set; }
         public bool IsPassing { get; set; }
+        public List<double> IndividualDistances { get; set; }
     }
 }
