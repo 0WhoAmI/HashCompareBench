@@ -14,7 +14,7 @@ namespace HashCompareBench.Utils
             Directory.CreateDirectory(_outputDir);
         }
 
-        // --- PLIK 1: Szczegółowe "kropki" dla Testu Hamminga ---
+        // --- PLIK 1: Wykres dla Testu Hamminga ---
         public void SaveHammingDetails(List<HammingDistanceTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
@@ -33,7 +33,7 @@ namespace HashCompareBench.Utils
             Console.WriteLine($"Zapisano: {filePath}");
         }
 
-        // --- PLIK 2: Szczegółowe "kropki" dla Testu Predykcji Bitów ---
+        // --- PLIK 2: Wykres dla Testu Predykcji Bitów ---
         public void SaveBitPredictionDetails(List<BitPredictionTestResult> results, string fileName)
         {
             string filePath = Path.Combine(_outputDir, fileName);
