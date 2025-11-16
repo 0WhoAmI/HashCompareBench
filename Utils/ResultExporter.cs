@@ -10,7 +10,7 @@ namespace HashCompareBench.Utils
         public ResultExporter(string outputDir)
         {
             _outputDir = outputDir;
-            // Upewnijmy się, czy katalog istnieje
+            // Upewniamy się, czy katalog istnieje
             Directory.CreateDirectory(_outputDir);
         }
 
